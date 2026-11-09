@@ -7,7 +7,8 @@ const target = process.env.VITE_API_PROXY || "https://tractor.skillinnovex.in";
 const proxy = { target, changeOrigin: true, secure: true };
 
 export default defineConfig({
-  base: "/admin/",
+  // Vercel hosts the panel at the domain root (VERCEL=1 during its builds; see vercel.json); the API server hosts it at /admin.
+  base: process.env.VERCEL ? "/" : "/admin/",
   plugins: [react()],
   server: {
     port: 5174,
