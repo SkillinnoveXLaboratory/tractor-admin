@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Paces template base */
+body {
+  font-family: "Public Sans", sans-serif;
+  background-color: #f3f5f9;
+  color: #495057;
+}
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.05); }
+::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); border-radius: 4px; }
+
+.sidebar { transition: width 0.3s ease, min-width 0.3s ease; }
+.sidebar.collapsed { width: 70px !important; min-width: 70px !important; }
+.sidebar.collapsed .sidebar-text,
+.sidebar.collapsed .sidebar-arrow,
+.sidebar.collapsed .sidebar-header-title,
+.sidebar.collapsed .sidebar-badge { display: none !important; }
+.sidebar.collapsed .sidebar-item { justify-content: center; padding-left: 0; padding-right: 0; }
+.sidebar.collapsed .submenu { display: none !important; }
+
+.range-bar { height: 4px; background: #e2e8f0; border-radius: 2px; position: relative; }
+.range-fill { height: 100%; background: #2563eb; border-radius: 2px; position: absolute; }
+.range-dot { width: 10px; height: 10px; background: #2563eb; border-radius: 50%; position: absolute; top: 50%; transform: translate(-50%, -50%); }
+.range-dot.alt { background: #f59e0b; }
+
+/* "Check with AI" — animated gradient button, thinking orb, progress sweep */
+.ai-btn {
+  position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 0.5rem;
+  padding: 0.6rem 1.1rem; border-radius: 9999px; font-size: 0.8rem; font-weight: 700; color: #fff; white-space: nowrap;
+  background: linear-gradient(110deg, #4f46e5, #2563eb, #0ea5e9, #8b5cf6, #4f46e5); background-size: 300% 100%;
+  box-shadow: 0 6px 18px -6px rgba(79, 70, 229, 0.6);
+  animation: ai-flow 6s linear infinite; transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+.ai-btn::after {
+  content: ""; position: absolute; inset: 0; transform: translateX(-120%);
+  background: linear-gradient(100deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  animation: ai-shine 2.8s ease-in-out infinite;
+}
+.ai-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 24px -8px rgba(79, 70, 229, 0.75); }
+.ai-btn:disabled { cursor: wait; }
+.ai-btn.is-running { animation-duration: 1.6s; }
+.ai-btn i { animation: ai-pulse 1.8s ease-in-out infinite; }
+.ai-orb {
+  width: 2.5rem; height: 2.5rem; border-radius: 9999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff;
+  background: radial-gradient(circle at 30% 30%, #818cf8, #4f46e5 60%, #312e81); animation: ai-breathe 1.6s ease-in-out infinite;
+}
+.ai-progress { height: 4px; border-radius: 9999px; background: #e0e7ff; position: relative; overflow: hidden; }
+.ai-progress::before {
+  content: ""; position: absolute; top: 0; bottom: 0; width: 40%; border-radius: 9999px;
+  background: linear-gradient(90deg, #6366f1, #0ea5e9); animation: ai-sweep 1.4s ease-in-out infinite;
+}
+.ai-reveal { animation: ai-in 0.35s ease-out; }
+@keyframes ai-flow { to { background-position: 300% 0; } }
+@keyframes ai-shine { 0%, 55% { transform: translateX(-120%); } 100% { transform: translateX(120%); } }
+@keyframes ai-pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
+@keyframes ai-breathe { 0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.45); } 50% { transform: scale(1.06); box-shadow: 0 0 0 8px rgba(99, 102, 241, 0); } }
+@keyframes ai-sweep { 0% { left: -40%; } 100% { left: 100%; } }
+@keyframes ai-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .ai-btn, .ai-btn::after, .ai-btn i, .ai-orb, .ai-progress::before, .ai-reveal { animation: none; }
+}
+
+@layer components {
+  .card { @apply bg-white p-5 rounded-xl border border-gray-100 shadow-sm; }
+  .card-label { @apply text-[11px] font-bold text-gray-400 tracking-wider uppercase; }
+  .card-title { @apply text-sm font-bold text-gray-800; }
+  .input { @apply w-full py-2 px-3 text-sm bg-white text-gray-700 border border-gray-200 rounded-lg focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 disabled:bg-gray-50 disabled:text-gray-400; }
+  .label { @apply block text-xs font-semibold text-gray-600 mb-1.5; }
+  .btn { @apply inline-flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap; }
+  .btn-primary { @apply btn bg-brand-blue text-white hover:bg-blue-700; }
+  .btn-light { @apply btn text-gray-600 bg-gray-50 hover:bg-gray-100 border border-gray-200; }
+  .btn-danger { @apply btn bg-rose-500 text-white hover:bg-rose-600; }
+  .btn-success { @apply btn bg-emerald-500 text-white hover:bg-emerald-600; }
+  .th { @apply px-4 py-3 text-left text-[11px] font-bold text-gray-400 uppercase tracking-wider whitespace-nowrap; }
+  .td { @apply px-4 py-3 text-xs text-gray-600 align-middle; }
+  .tab { @apply pb-2 text-xs font-semibold text-gray-500 hover:text-blue-600 whitespace-nowrap border-b-2 border-transparent; }
+  .tab-active { @apply text-blue-600 border-blue-600 font-bold; }
+}
+
+/* Public legal pages (privacy policy). */
+@layer components {
+  .policy section + section { @apply mt-8 pt-8 border-t border-gray-100; }
+  .policy h2 { @apply text-lg font-bold text-gray-900 mb-3; }
+  .policy h3 { @apply text-sm font-bold text-gray-800 mt-5 mb-2; }
+  .policy p { @apply text-sm leading-relaxed mb-3; }
+  .policy ul { @apply list-disc pl-5 space-y-2 text-sm leading-relaxed mb-3; }
+  .policy b { @apply font-semibold text-gray-800; }
+  .policy a { @apply text-blue-600 hover:underline break-words; }
+}
